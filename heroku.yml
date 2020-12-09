@@ -1,0 +1,19 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+    - plan: heroku-redis
+      as: REDIS
+build:
+  docker:
+    web: Dockerfile
+  config:
+    code_coverage: true
+    skip_dev_deps: true
+    skip_ds_deps: true
+run:
+  web: export MAX_REQUESTS=${MAX_REQUESTS:-1000}; export MAX_REQUESTS_JITTER=${MAX_REQUESTS_JITTER:-100}; exec /usr/local/bin/gunicorn -b 0.0.0.0:$PORT --name redash -w${REDASH_WEB_WORKERS:-4} redash.wsgi:app --max-requests $MAX_REQUESTS --max-requests-jitter $MAX_REQUESTS_JITTER
+  worker:
+    command:
+      - export WORKERS_COUNT=${WORKERS_COUNT:-2}; export QUEUES=${QUEUES:-}; exec supervisord -c worker.conf
+    image: web
