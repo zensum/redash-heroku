@@ -17,7 +17,7 @@ heroku git:remote --app $app_name
 git push heroku master
 
 # Setup db
-heroku run "create_db" --app $app_name
+heroku run "exec /app/manage.py database create_tables" --app $app_name
 ```
 
 # How ?
