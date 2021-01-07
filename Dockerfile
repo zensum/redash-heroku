@@ -1,5 +1,6 @@
 FROM redash/redash
 
+COPY ./worker.sh /worker.sh
 
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
