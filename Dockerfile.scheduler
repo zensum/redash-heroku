@@ -1,0 +1,5 @@
+FROM redash/redash
+
+ENTRYPOINT ["/app/bin/docker-entrypoint"]
+
+CMD exec /app/bin/docker-entrypoint scheduler
