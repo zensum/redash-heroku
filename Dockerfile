@@ -1,6 +1,7 @@
 FROM redash/redash:8.0.0.b32245
 
 # Installing ISRG Root X1
+# source: https://stackoverflow.com/questions/60382570/adding-lets-encrypt-certificates-to-debian9-docker-image
 
 USER root
 
@@ -17,7 +18,6 @@ RUN  cd /usr/local/share/ca-certificates \
  && update-ca-certificates
 
 USER redash
-
 
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
