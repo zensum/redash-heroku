@@ -1,4 +1,4 @@
-FROM redash/redash
+FROM redash/redash:preview
 
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 

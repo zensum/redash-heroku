@@ -1,13 +1,4 @@
-FROM redash/redash
-
-WORKDIR /app
-RUN ls -la
-
-FROM python:3.7-slim
-COPY --from=redash /app /app
-COPY --from=redash /usr/local/lib/python3.7/site-packages /usr/local/lib/python3.7/site-packages
-RUN python -m pip install --upgrade pymongo
-
+FROM redash/redash:preview
 
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
