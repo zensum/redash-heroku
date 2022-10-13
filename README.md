@@ -1,14 +1,14 @@
 # Setup From Scratch
 ```sh
 # Set a app name
-app_name=zaker-redash
+app_name=redash-new
 
 # Update to heroku beta in order to use manifests
 heroku update beta
 heroku plugins:install @heroku-cli/plugin-manifest
 
 # Create Heroku app
-heroku create $app_name --manifest -t zensum --region eu
+heroku create $app_name --manifest -t zensum --region eu --space zensum
 
 # Link git to heroku git
 heroku git:remote --app $app_name
@@ -17,7 +17,7 @@ heroku git:remote --app $app_name
 git push heroku master
 
 # Setup db
-heroku run "exec /app/manage.py database create_tables" --app $app_name
+heroku run "exec /app/bin/docker-entrypoint create_db" --app $app_name
 ```
 
 # How ?

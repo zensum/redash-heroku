@@ -1,7 +1,5 @@
 setup:
   addons:
-    - plan: heroku-postgresql
-      as: DATABASE
     - plan: rediscloud:100
       as: REDIS
 build:

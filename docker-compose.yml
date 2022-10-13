@@ -1,28 +1,26 @@
 version: '3.4'
-x-service-environment:
-    &service-environment
+x-server-environment: &server-environment
     DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/postgres}
     REDIS_URL: ${REDIS_URL:-redis://redis:6379}
     REDASH_COOKIE_SECRET: ${REDASH_COOKIE_SECRET:-redash_cookie_secret}
 
-x-service-image:
-    &service-image
+x-server-image: &server-image
     build:
         context: .
         dockerfile: docker/Dockerfile
     environment:
-        <<: *service-environment
+        <<: *server-environment
 
 services:
-    service:
-        <<: *service-image
+    server:
+        <<: *server-image
         ports:
             - 3000:3000
         build:
             context: .
             dockerfile: Dockerfile
         environment:
-            <<: *service-environment
+            <<: *server-environment
             PORT: ${PORT:-3000}
         depends_on:
             - redis
@@ -30,14 +28,15 @@ services:
             - scheduler
 
     worker:
-        <<: *service-image
+        <<: *server-image
         build:
           dockerfile: Dockerfile.worker
         depends_on:
             - redis
+            - postgres
 
     scheduler:
-        <<: *service-image
+        <<: *server-image
         build:
           dockerfile: Dockerfile.scheduler
 
