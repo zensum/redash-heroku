@@ -1,5 +1,7 @@
 FROM redash/redash
 
+RUN pip install --upgrade pymongo
+
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
 CMD exec /app/bin/docker-entrypoint worker
