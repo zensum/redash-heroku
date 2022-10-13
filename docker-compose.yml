@@ -1,0 +1,50 @@
+version: '3.4'
+x-service-environment:
+    &service-environment
+    DATABASE_URL: ${DATABASE_URL}
+    REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+
+x-service-image:
+    &service-image
+    build:
+        context: .
+        dockerfile: docker/Dockerfile
+    environment:
+        <<: *service-environment
+
+services:
+    service:
+        <<: *service-image
+        ports:
+            - 3000:3000
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            <<: *service-environment
+            PORT: ${PORT:-3000}
+        depends_on:
+            - redis
+            - worker
+            - scheduler
+
+    worker:
+        <<: *service-image
+        build:
+          dockerfile: Dockerfile.worker
+        depends_on:
+            - redis
+
+    scheduler:
+        <<: *service-image
+        build:
+          dockerfile: Dockerfile.scheduler
+
+
+    redis:
+        image: redis
+        command: redis-server --appendonly yes
+        volumes:
+            - ./.docker-volumes/redis:/data
+        expose:
+            - 6379
