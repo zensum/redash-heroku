@@ -1,6 +1,6 @@
 FROM redash/redash
 
-RUN pip install --upgrade pymongo
+RUN /usr/bin/env python -m pip install --upgrade pymongo
 
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
